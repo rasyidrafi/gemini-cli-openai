@@ -5,14 +5,15 @@
   "scripts": {
     "deploy": "wrangler deploy",
     "dev": "wrangler dev",
-    "format": "prettier --write src",
-    "format:check": "prettier --check src",
+    "dev:node": "tsx watch src/server.ts",
     "build": "wrangler deploy --dry-run --outdir=dist",
+    "build:node": "tsc -p tsconfig.node.json",
+    "start": "node dist/server.js",
     "lint": "eslint --ext .ts src && npm run tsc",
     "lint:fix": "eslint --ext .ts src --fix",
     "docker:build": "docker-compose build",
-    "docker:dev": "docker-compose up --build",
-    "docker:start": "docker-compose up",
+    "docker:dev": "docker-compose -f docker-compose.dev.yml up --build",
+    "docker:start": "docker-compose -f docker-compose.prod.yml up",
     "docker:stop": "docker-compose down",
     "docker:clean": "docker-compose down -v && docker system prune -f",
     "docker:logs": "docker-compose logs -f gemini-worker",
@@ -20,6 +21,8 @@
     "tsc": "tsc --noEmit --skipLibCheck"
   },
   "dependencies": {
+    "@hono/node-server": "^1.19.5",
+    "better-sqlite3": "^12.4.1",
     "hono": "^4.9.2"
   },
   "devDependencies": {
@@ -31,6 +34,7 @@
     "@typescript-eslint/parser": "^8.39.1",
     "eslint": "^9.33.0",
     "prettier": "^3.6.2",
+    "tsx": "^4.20.6",
     "typescript": "^5.4.5",
     "wrangler": "^4.30.0"
   }

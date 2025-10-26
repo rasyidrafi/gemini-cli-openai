@@ -1,6 +1,16 @@
 import { NativeToolResponse } from "./types/native-tools";
 
-// --- Safety Threshold Types ---
+// --- KV Namespace Interface ---
+export interface KVNamespace {
+	get(key: string): Promise<string | null>;
+	get(key: string, type: "text"): Promise<string | null>;
+	get(key: string, type: "json"): Promise<any>;
+	get(key: string, type: "arrayBuffer"): Promise<ArrayBuffer>;
+	get(key: string, type: "stream"): Promise<ReadableStream>;
+	put(key: string, value: string | ArrayBuffer, options?: { expirationTtl?: number }): Promise<void>;
+	delete(key: string): Promise<void>;
+	list(options?: { prefix?: string }): Promise<{ keys: { name: string }[] }>;
+}
 export type SafetyThreshold =
 	| "BLOCK_NONE"
 	| "BLOCK_FEW"

@@ -1,0 +1,33 @@
+[Unit]
+Description=Gemini CLI OpenAI Worker
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+User=gemini-worker
+Group=gemini-worker
+WorkingDirectory=/opt/gemini-cli-openai
+Environment=NODE_ENV=production
+EnvironmentFile=-/opt/gemini-cli-openai/.env
+ExecStart=/usr/bin/node /opt/gemini-cli-openai/dist/server.js
+Restart=always
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=gemini-worker
+
+# Security settings
+NoNewPrivileges=yes
+PrivateTmp=yes
+ProtectSystem=strict
+ReadWritePaths=/opt/gemini-cli-openai/data
+ProtectHome=yes
+PrivateDevices=yes
+
+# Resource limits
+MemoryLimit=512M
+CPUQuota=50%
+
+[Install]
+WantedBy=multi-user.target
